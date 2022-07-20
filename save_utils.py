@@ -21,11 +21,11 @@ def update_orgs(filename, full, short):
     new_full = set(data['5']['full'])
     new_full.add(full.strip())
 
-    data['5'] = {"short": new_short, "full": new_full}
+    data['5'] = {"short": list(new_short), "full": list(new_full)}
 
     # Save dict to json
-    with open(filename, 'w') as f:
-        json.dump(data, f)
+    with open(filename, 'w', encoding='utf8') as f:
+        json.dump(data, f, ensure_ascii=False)
 
 
 def update_division_type_name(filename, dt):
@@ -33,8 +33,8 @@ def update_division_type_name(filename, dt):
 
     new_dt = set(data['10'])
     new_dt.add(dt.strip())
-    data['10'] = new_dt
+    data['10'] = list(new_dt)
 
     # Save dict to json
-    with open(filename, 'w') as f:
-        json.dump(data, f)
+    with open(filename, 'w', encoding='utf8') as f:
+        json.dump(data, f, ensure_ascii=False)

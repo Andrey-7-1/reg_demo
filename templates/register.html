@@ -11,6 +11,7 @@
     <!-- Tailwind CSS (Unused but somehow makes it look better) -->
     <link href="../static/css/tailwind.css" rel="stylesheet">
 
+    <!-- Page specific CSS and JS -->
     <link rel="stylesheet" href="../static/css/register.css">
     <script src="../static/js/register.js"></script>
 
@@ -34,15 +35,26 @@
     <div class="box">
         <div class="question-box-big">
             {{ form.org_name_short.label }}
-            {{ form.org_name_short(class="form-control org", id="org-short") }}
+            {{ form.org_name_short(class="form-control org", id="org-short", list="org_options_short") }}
         </div>
     </div>
     <div class="box">
         <div class="question-box-big">
             {{ form.org_name_full.label }}
-            {{ form.org_name_full(class="form-control org", id="org-full") }}
+            {{ form.org_name_full(class="form-control org", id="org-full", list="org_options_full") }}
         </div>
     </div>
+    <datalist id="org_options_short">
+        {% for org in org_options['short'] %}
+            <option value="{{ org }}">
+        {% endfor %}
+    </datalist>
+    <datalist id="org_options_full">
+        {% for org in org_options['full'] %}
+            <option value="{{ org }}">
+        {% endfor %}
+    </datalist>
+
 
     <div class="box">
         <div class="question-box-small input-group">
@@ -109,8 +121,13 @@
     <div class="box">
         <div class="question-box-big">
             {{ form.division_type_name.label }}
-            {{ form.division_type_name(class="form-control", id="result-3", onkeyup="show_result(ref)" | replace('ref', dt_options), onInput="show_result(ref)" | replace('ref', dt_options)) }}
+            {{ form.division_type_name(class="form-control", list="dtn_options", id="result-3", onkeyup="show_result(ref)" | replace('ref', dt_options), onInput="show_result(ref)" | replace('ref', dt_options)) }}
         </div>
+        <datalist id="dtn_options">
+            {% for option in dtn_options %}
+                <option value="{{ option }}">
+            {% endfor %}
+        </datalist>
     </div>
     <h6 style="text-align: center">=</h6>
     <div class="box">

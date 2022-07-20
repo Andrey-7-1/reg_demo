@@ -57,6 +57,7 @@ def register():
 
     # Note: Wrong keys might be used!!!
 
+    org_options = data['5']
     dn_options_type = data['11']
     dn_options = {"Аппарат_управления": data['7']['normal'],
                   "Структурное_подразделение": data['8']['normal'],
@@ -64,13 +65,16 @@ def register():
     pt_options = data['2'] + data['3'] + data['4']  # Maybe make only valid options show up?
     pt_level_ref = {"specialist": data['2'], "supervisor": data['3'] + data['4']}
     dt_options = data['6']
+    dtn_options = data['10']
 
     return render_template('register.html', form=form,
                            dn_options_type=dn_options_type,
                            dn_options=dn_options,
                            pt_options=pt_options,
                            pt_level_ref=pt_level_ref,
-                           dt_options=dt_options)
+                           dt_options=dt_options,
+                           org_options=org_options,
+                           dtn_options=dtn_options)
 
 
 @app.route('/data', methods=['GET', 'POST'])
