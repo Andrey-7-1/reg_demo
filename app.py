@@ -1,4 +1,6 @@
 import json
+import os
+import sys
 
 from flask import Flask, request, render_template, redirect, abort, url_for, send_from_directory
 
@@ -11,6 +13,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '12345'
 app_ui = FlaskUI(app, width=500, height=500)  # Ui For the app
 
+# For accessing files
+if getattr(sys, 'frozen', False):
+    app_path = os.path.dirname(sys.executable)
+elif __file__:
+    app_path = os.path.dirname(__file__)
+else:
+    app_path = os.getcwd()
+app_path += '/'
+
 
 @app.route('/')
 def index():  # put application's code here
@@ -19,7 +30,8 @@ def index():  # put application's code here
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    data = json.load(open('data/user_reg_options.json'))
+
+    data = json.load(open(app_path + 'data/user_reg_options.json'))
     form = RegisterForm()
 
     # Form submitted
@@ -50,9 +62,9 @@ def register():
                 form.reg_hour_num.data, form.reg_minute_num.data,
                 form.account_id.data)
 
-        save_to_csv('data/users.csv', user)
-        update_orgs('data/user_reg_options.json', form.org_name_full.data, form.org_name_short.data)
-        update_division_type_name('data/user_reg_options.json', form.division_type_name.data)
+        save_to_csv(app_path + 'data/users.csv', user)
+        update_orgs(app_path + 'data/user_reg_options.json', form.org_name_full.data, form.org_name_short.data)
+        update_division_type_name(app_path + 'data/user_reg_options.json', form.division_type_name.data)
         return redirect(url_for('success'))
 
     # Note: Wrong keys might be used!!!
@@ -84,7 +96,7 @@ def data():
         if request.form['code'] != '12345':
             abort(403)
         else:
-            return send_from_directory('data', 'users.csv')
+            return send_from_directory(app_path + 'data', 'users.csv')
     return render_template('auth.html')
 
 
